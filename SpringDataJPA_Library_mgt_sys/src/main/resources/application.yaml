@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: SpringDataJPA_Library_mgt_sys
