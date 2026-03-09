@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: spring-boot_up_and_running
