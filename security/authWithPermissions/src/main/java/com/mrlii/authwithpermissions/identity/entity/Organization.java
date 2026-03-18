@@ -21,7 +21,7 @@ public class Organization extends BaseEntity {
 
     private String name;
 
-    @OneToMany( fetch = FetchType.LAZY )
+    @OneToMany( mappedBy = "organization", fetch = FetchType.LAZY )
     private List<OrganizationOffice> offices;
 
 }

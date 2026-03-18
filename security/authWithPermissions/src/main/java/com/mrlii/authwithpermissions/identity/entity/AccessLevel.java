@@ -24,9 +24,9 @@ public class AccessLevel extends BaseEntity {
         @OneToMany( fetch = FetchType.LAZY )
         private List<Permission> permissions;
 
-        @OneToMany( fetch = FetchType.LAZY )
+        @OneToMany( mappedBy = "accessLevel", fetch = FetchType.LAZY )
         private List<PermissionScope> permissionScopes;
 
-        @OneToMany( fetch = FetchType.LAZY )
+        @OneToMany( mappedBy = "accessLevel", fetch = FetchType.LAZY )
         private List<User> users;
 }
