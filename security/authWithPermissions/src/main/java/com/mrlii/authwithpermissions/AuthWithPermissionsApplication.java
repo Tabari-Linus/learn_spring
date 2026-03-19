@@ -1,6 +1,6 @@
 package com.mrlii.authwithpermissions;
 
-import com.mrlii.authwithpermissions.configuration.propertiesConfig.EmailPropertiesConfig;
+import com.mrlii.authwithpermissions.configuration.propertiesconfig.EmailPropertiesConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
