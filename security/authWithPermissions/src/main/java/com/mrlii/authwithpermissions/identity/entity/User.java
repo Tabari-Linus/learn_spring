@@ -27,7 +27,7 @@ public class User extends BaseEntity {
     @Email
     private String email;
 
-    @Size(min = 6, message = "Password must be at least 6 characters long")
+    @Size(min = 8, message = "Password must be at least 6 characters long")
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d]+$", message = "Password must contain at least one letter, one number, and one special character")
     private String password;
 
