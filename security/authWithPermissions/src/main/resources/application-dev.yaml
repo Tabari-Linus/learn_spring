@@ -1,0 +1,64 @@
+
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:auth_with_permissions}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+
+  jpa:
+    show-sql: ${DATABASE_SHOW_SQL:true}
+    hibernate:
+      ddl-auto: ${DATABASE_DDL_AUTO:none}
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
+    clean-disabled: true
+    out-of-order: true
+    locations: classpath:db/migration
+    validate-on-migrate: true
+    validate-migration-naming: true
+    ignore-migration-patterns: "*:pending"
+
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    protocol: ${MAIL_PROTOCOL:smtp}
+    from: ${MAIL_FROM}
+
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          starttls:
+            enable: true
+
+
+jwt:
+  secret: ${JWT_SECRET:your_jwt_secret_key}
+  publickey: ${JWT_PUBLIC_KEY:your_jwt_public_key}
+  privatekey: ${JWT_PRIVATE_KEY:your_jwt_private_key}
+  expiration: ${JWT_EXPIRATION:3600} # in seconds
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:86400} # in seconds
+
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
+  level:
+    root: ${LOG_LEVEL:INFO}
+
