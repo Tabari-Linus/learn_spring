@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +51,7 @@ public class TaskService {
     public List<TaskDto> getAllTask() {
         return taskRepository.findAll().stream()
                 .map(taskMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public TaskDto updateTask(Long id, String title) {
