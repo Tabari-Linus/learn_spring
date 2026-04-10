@@ -1,7 +1,7 @@
 package com.mrlii.tddtaskmanagementapplication.Controller;
 
 import com.mrlii.tddtaskmanagementapplication.controller.TaskController;
-import com.mrlii.tddtaskmanagementapplication.model.entity.Task;
+import com.mrlii.tddtaskmanagementapplication.model.dto.TaskDto;
 import com.mrlii.tddtaskmanagementapplication.service.TaskService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +37,9 @@ class TaskControllerTest {
 
     @Test
     void testGetAllTasks() throws Exception {
-        List<Task> tasks = Arrays.asList(
-                Task.builder().id(1L).title("Cook beans").status("Done").build(),
-                Task.builder().id(2L).title("Cook rice").status("In Progress").build()
+        List<TaskDto> tasks = Arrays.asList(
+                new TaskDto(1L, "Cook beans", "Done"),
+                new TaskDto(2L, "Cook rice", "In Progress")
         );
 
         when(taskService.getAllTask()).thenReturn(tasks);
@@ -53,7 +53,7 @@ class TaskControllerTest {
 
     @Test
     void testGetTaskById() throws Exception {
-        Task task = Task.builder().id(1L).title("Cook beans").status("Done").build();
+        TaskDto task = new TaskDto(1L, "Cook beans", "Done");
 
         when(taskService.getTaskById(1L)).thenReturn(task);
 
@@ -65,14 +65,14 @@ class TaskControllerTest {
 
     @Test
     void testCreateTask() throws Exception {
-        Task task = Task.builder().title("Cook beans").status("Done").build();
-        Task savedTask = Task.builder().id(1L).title("Cook beans").status("Done").build();
+        TaskDto taskDto = new TaskDto(null, "Cook beans", "Done");
+        TaskDto savedTask = new TaskDto(1L, "Cook beans", "Done");
 
-        when(taskService.createTask(task)).thenReturn(savedTask);
+        when(taskService.createTask(taskDto)).thenReturn(savedTask);
 
         mockMvc.perform(post("/tasks")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(task)))
+                        .content(objectMapper.writeValueAsString(taskDto)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value("Cook beans"))
@@ -81,18 +81,18 @@ class TaskControllerTest {
 
     @Test
     void testCreateTask_InvalidRequestInput() throws Exception {
-        Task task = Task.builder().title("").status("Done").build();
+        TaskDto taskDto = new TaskDto(null, "", "Done");
 
         mockMvc.perform(post("/tasks")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(task)))
+                        .content(objectMapper.writeValueAsString(taskDto)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void testUpdateTaskStatus() throws Exception {
-        Task requestTask = Task.builder().id(1L).status("In Progress").build();
-        Task updatedTask = Task.builder().id(1L).title("Cook beans").status("In Progress").build();
+        TaskDto requestTask = new TaskDto(1L, null, "In Progress");
+        TaskDto updatedTask = new TaskDto(1L, "Cook beans", "In Progress");
 
         when(taskService.updateTaskStatus(1L, "In Progress")).thenReturn(updatedTask);
 
@@ -107,8 +107,8 @@ class TaskControllerTest {
 
     @Test
     void testUpdateTaskTitle() throws Exception {
-        Task requestTask = Task.builder().id(1L).title("Cook rice").build();
-        Task updatedTask = Task.builder().id(1L).title("Cook rice").status("Done").build();
+        TaskDto requestTask = new TaskDto(1L, "Cook rice", null);
+        TaskDto updatedTask = new TaskDto(1L, "Cook rice", "Done");
 
         when(taskService.updateTask(1L, "Cook rice")).thenReturn(updatedTask);
 
@@ -123,7 +123,7 @@ class TaskControllerTest {
 
     @Test
     void testDeleteTask() throws Exception {
-        Task requestTask = Task.builder().id(1L).build();
+        TaskDto requestTask = new TaskDto(1L, null, null);
 
         doNothing().when(taskService).deleteTask(1L);
 

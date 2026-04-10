@@ -1,6 +1,6 @@
 package com.mrlii.tddtaskmanagementapplication.controller;
 
-import com.mrlii.tddtaskmanagementapplication.model.entity.Task;
+import com.mrlii.tddtaskmanagementapplication.model.dto.TaskDto;
 import com.mrlii.tddtaskmanagementapplication.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,40 +18,38 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping
-    public ResponseEntity<List<Task>> getAllTasks() {
-       List<Task> tasks = taskService.getAllTask();
+    public ResponseEntity<List<TaskDto>> getAllTasks() {
+        List<TaskDto> tasks = taskService.getAllTask();
         return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        Task task = taskService.getTaskById(id);
+    public ResponseEntity<TaskDto> getTaskById(@PathVariable Long id) {
+        TaskDto task = taskService.getTaskById(id);
         return ResponseEntity.ok(task);
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@Valid @RequestBody Task task) {
-        Task savedTask = taskService.createTask(task);
+    public ResponseEntity<TaskDto> createTask(@Valid @RequestBody TaskDto taskDto) {
+        TaskDto savedTask = taskService.createTask(taskDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTask);
     }
 
     @PutMapping("/update-status")
-    public ResponseEntity<Task> updateTaskStatus(@RequestBody Task task) {
-        Task updatedTask = taskService.updateTaskStatus(task.getId(), task.getStatus());
+    public ResponseEntity<TaskDto> updateTaskStatus(@RequestBody TaskDto taskDto) {
+        TaskDto updatedTask = taskService.updateTaskStatus(taskDto.id(), taskDto.status());
         return ResponseEntity.ok(updatedTask);
     }
 
     @PutMapping("/update-title")
-    public ResponseEntity<Task> updateTaskTitle(@RequestBody Task task) {
-        Task updatedTask = taskService.updateTask(task.getId(), task.getTitle());
+    public ResponseEntity<TaskDto> updateTaskTitle(@RequestBody TaskDto taskDto) {
+        TaskDto updatedTask = taskService.updateTask(taskDto.id(), taskDto.title());
         return ResponseEntity.ok(updatedTask);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteTask(@RequestBody Task task) {
-        taskService.deleteTask(task.getId());
+    public ResponseEntity<Void> deleteTask(@RequestBody TaskDto taskDto) {
+        taskService.deleteTask(taskDto.id());
         return ResponseEntity.noContent().build();
     }
-
-
 }
